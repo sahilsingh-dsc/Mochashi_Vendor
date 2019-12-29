@@ -3,6 +3,7 @@ package com.tetraval.mochashivendor.chashivendor.view.fragment;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -53,6 +54,7 @@ public class ProductFragment extends Fragment {
     private List<ChashiProductModel> chashiProductModelList;
     private ChashiProductAdapter chashiProductAdapter;
     private LinearLayoutManager linearLayoutManager;
+    SharedPreferences profile;
     TextView txtNoProducts;
 //    ImageView imgExpand;
 //    CardView cardView;
@@ -70,6 +72,8 @@ public class ProductFragment extends Fragment {
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Please Wait...");
         progressDialog.setCancelable(false);
+
+        profile = getContext().getSharedPreferences("USER_PROFILE", 0);
 
         recyclerChashiProduct = view.findViewById(R.id.recyclerChashiProduct);
         txtNoProducts = view.findViewById(R.id.txtNoProducts);
@@ -122,7 +126,7 @@ public class ProductFragment extends Fragment {
 
     private void getProductList(){
         Query queryProducts = db.collection("chashi_products");
-        queryProducts.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        queryProducts.whereEqualTo("p_chashi_uid", profile.getString("p_uid", "")).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){

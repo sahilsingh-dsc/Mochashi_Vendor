@@ -21,35 +21,6 @@
                 android:padding="8dp">
 
                 <TextView
-                    android:id="@+id/textView9"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Customer ID:"
-                    android:textColor="@color/colorBlack" />
-
-                <TextView
-                    android:id="@+id/txtCustomerID"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:minWidth="100dp"
-                    android:text="TextView" />
-            </LinearLayout>
-
-            <View
-                android:id="@+id/divider8"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="?android:attr/listDivider" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:padding="8dp">
-
-                <TextView
                     android:id="@+id/textView11"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

@@ -521,7 +521,7 @@ public class AddChashiProductActivity extends AppCompatActivity {
         chashiProductModel.setP_received_qty("0");
         productColRef.document(p_uid).set(chashiProductModel);
         Toast.makeText(this, "Product Added!", Toast.LENGTH_SHORT).show();
-        onBackPressed();
+        startActivity(new Intent(AddChashiProductActivity.this, ChashiDashboardActivity.class));
     }
 
 }

@@ -47,12 +47,10 @@ public class ChashiOrderAdapter extends RecyclerView.Adapter<ChashiOrderAdapter.
 
                 LayoutInflater factory = LayoutInflater.from(context);
                 final View deleteDialogView = factory.inflate(R.layout.show_customer_details_alert, null);
-                TextView txtCustomerID, txtCustomerName;
+                TextView txtCustomerName;
                 MaterialButton btnShowOnMap;
-                txtCustomerID = deleteDialogView.findViewById(R.id.txtCustomerID);
                 txtCustomerName = deleteDialogView.findViewById(R.id.txtCustomerName);
                 btnShowOnMap = deleteDialogView.findViewById(R.id.btnShowOnMap);
-                txtCustomerID.setText(chashiOrdersModel.getO_customer_uid());
                 txtCustomerName.setText(chashiOrdersModel.getO_customer_name());
                 btnShowOnMap.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -75,10 +73,10 @@ public class ChashiOrderAdapter extends RecyclerView.Adapter<ChashiOrderAdapter.
 
             }
         });
-        holder.txtOrderId.setText(chashiOrdersModel.getO_uid());
         holder.txtOrderDate.setText(chashiOrdersModel.getO_timestamp());
         holder.txtOrderCategory.setText(chashiOrdersModel.getO_p_category());
-        holder.txtOrderAmount.setText("₹"+chashiOrdersModel.getO_total());
+        double total_amt = Double.parseDouble(chashiOrdersModel.getO_quantity()) * Double.parseDouble(chashiOrdersModel.getO_rate());
+        holder.txtOrderAmount.setText("₹"+total_amt);
         holder.txtOrderQuantity.setText(chashiOrdersModel.getO_quantity() +" "+chashiOrdersModel.getO_unit());
         if (chashiOrdersModel.getO_homedelivery().equals("No")){
             if (chashiOrdersModel.getO_pickup().equals("Yes")){
@@ -100,7 +98,7 @@ public class ChashiOrderAdapter extends RecyclerView.Adapter<ChashiOrderAdapter.
     public class OrderViewHolder extends RecyclerView.ViewHolder {
 
         ImageView imgUserDetails;
-        TextView txtOrderCategory, txtOrderQuantity, txtOrderAmount, txtPickupBy, txtOrderId, txtOrderDate;
+        TextView txtOrderCategory, txtOrderQuantity, txtOrderAmount, txtPickupBy, txtOrderDate;
 
         public OrderViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -110,7 +108,6 @@ public class ChashiOrderAdapter extends RecyclerView.Adapter<ChashiOrderAdapter.
             txtOrderCategory = itemView.findViewById(R.id.txtOrderCategory);
             txtOrderAmount = itemView.findViewById(R.id.txtOrderAmount);
             txtPickupBy = itemView.findViewById(R.id.txtPickupBy);
-            txtOrderId = itemView.findViewById(R.id.txtOrderId);
             txtOrderDate = itemView.findViewById(R.id.txtOrderDate);
 
         }

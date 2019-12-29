@@ -1,9 +1,11 @@
 package com.tetraval.mochashivendor.chashivendor.view.fragment;
 
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -29,6 +31,8 @@ public class HomeFragment extends Fragment {
     FirebaseFirestore db;
     TextView txtTotalValue, txtTotalSale;
     double o_per_value = 0, o_total_value = 0;
+    SharedPreferences profile;
+    ConstraintLayout clTotalValue, clTotalSales;
 
     public HomeFragment() {
     }
@@ -39,9 +43,26 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         db = FirebaseFirestore.getInstance();
+        profile = getContext().getSharedPreferences("USER_PROFILE", 0);
 
         txtTotalValue = view.findViewById(R.id.txtTotalValue);
         txtTotalSale = view.findViewById(R.id.txtTotalSale);
+        clTotalValue = view.findViewById(R.id.clTotalValue);
+        clTotalSales = view.findViewById(R.id.clTotalSales);
+
+        clTotalValue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((ChashiDashboardActivity)getActivity()).changeMenu(R.id.menu_products);
+            }
+        });
+
+        clTotalSales.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((ChashiDashboardActivity)getActivity()).changeMenu(R.id.menu_orders);
+            }
+        });
 
         getProductList();
         fetchOrders();
@@ -52,7 +73,7 @@ public class HomeFragment extends Fragment {
 
     private void getProductList(){
         Query queryProducts = db.collection("chashi_products");
-        queryProducts.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        queryProducts.whereEqualTo("p_chashi_uid", profile.getString("p_uid", "")).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
@@ -75,14 +96,14 @@ public class HomeFragment extends Fragment {
     private void fetchOrders(){
 
         Query queryOrders = db.collection("chashi_orders");
-        queryOrders.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        queryOrders.whereEqualTo("o_chashi_uid", profile.getString("p_uid", "")).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()){
                     if (task.getResult() != null){
                        for (DocumentSnapshot document : task.getResult()){
                            double local_total_quantity = Double.parseDouble(document.getString("o_quantity"));
-                           double local_total_amount = Double.parseDouble(document.getString("o_rate"))+Double.parseDouble(document.getString("o_shipping"));
+                           double local_total_amount = Double.parseDouble(document.getString("o_rate"));
                            o_per_value = local_total_amount*local_total_quantity;
                            o_total_value = o_per_value+o_total_value;
                        }

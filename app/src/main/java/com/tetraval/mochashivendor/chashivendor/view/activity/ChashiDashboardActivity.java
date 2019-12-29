@@ -63,7 +63,7 @@ public class ChashiDashboardActivity extends AppCompatActivity implements Bottom
 
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         bottomNavigationView.setOnNavigationItemSelectedListener(ChashiDashboardActivity.this);
-        bottomNavigationView.setSelectedItemId(R.id.menu_home);
+        changeMenu(R.id.menu_home);
 
         db = FirebaseFirestore.getInstance();
         db = FirebaseFirestore.getInstance();
@@ -205,6 +205,10 @@ public class ChashiDashboardActivity extends AppCompatActivity implements Bottom
         firebaseAuth.signOut();
         startActivity(new Intent(ChashiDashboardActivity.this, MobileActivity.class));
         finish();
+    }
+
+    public void changeMenu(int menu){
+        bottomNavigationView.setSelectedItemId(menu);
     }
 
 
